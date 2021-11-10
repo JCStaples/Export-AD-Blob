@@ -1,4 +1,4 @@
-<#DETAILS
+<#
 .SYNOPSIS
     On the AD Server side, offline ADJoin.
 .DESCRIPTION
@@ -14,7 +14,6 @@
 .NOTES
     Version: 1.0
     Author: Jack Staples
-    Email: jack.staples@outlook.com
 #>
 
 <#Frameworks#>
