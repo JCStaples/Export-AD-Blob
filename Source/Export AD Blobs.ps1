@@ -98,7 +98,7 @@ function ProvisionBlob () {
     if (Test-Path $list) {
         #Tests for DeviceList.txt file and provisions listed devices to domain if found
         ProvisionBlob #Provision function called
-        Remove-Item $dir"DeviceList.txt"
+        Remove-Item $list
         TextBox "Provisioning has been completed." "Provisioning Complete" "Ok" "Info"
     }
     else {
@@ -113,7 +113,7 @@ function ProvisionBlob () {
             switch ($ready) {
                 "Yes" {
                     ProvisionBlob #Provision function called
-                    Remove-Item $dir"DeviceList.txt"
+                    Remove-Item $list
                     TextBox "Provisioning has been completed." "Provisioning Complete" "Ok" "Info"
                 }
             }
