@@ -43,8 +43,7 @@ function FTPSend($dir, $machine) {
     #Production
     $HostName = "27.33.253.184"
     $UserName = "ad.upload"
-    $Password = "01000000d08c9ddf0115d1118c7a00c04fc297eb01000000d30d43f63f145d4bb63cf7d2b0820c9d0000000002000000000010660000000100002000000080e81648c49c4331bf13dd2a6ab93c56d244d35aec0d000ecae15b679490967e000000000e800000000200002000000045242fc8a3b8890b858fb153cbba148acc347f3916e6397c1ca02a30e97175f240000000020b019327ef6fbfbfd2b1a5e032b73bc803eaf177037ddb4f62e3caa9a14b974122976681cbc4d4bd7f109c0987c3ed9f351c84e82e76add79b335bcd65b137400000005713363fe13b9c57a1ed8aea8a75d1b535a22a1d8229abf973386dcaeac8dc5b5945eb97714e92fdb5553059c34e9747f913bbfb8395582f0e7e2c1e524c6b77"
-    $SecurePwd = $Password | ConvertFrom-SecureString
+    $Password = "b&eu%sx2!9^G2nC!t!HhDM6!"
 
     #Files
     $LocalFile = "$dir$machine"
@@ -53,7 +52,7 @@ function FTPSend($dir, $machine) {
     #Create FTP Rquest Object
     $FTPRequest = [System.Net.FtpWebRequest]::Create("$RemoteFile")
     $FTPRequest = [System.Net.FtpWebRequest]$FTPRequest; $FTPRequest.Method = [System.Net.WebRequestMethods+Ftp]::UploadFile
-    $FTPRequest.Credentials = New-Object System.Net.NetworkCredential($Username, $SecurePwd)
+    $FTPRequest.Credentials = New-Object System.Net.NetworkCredential($Username, $Password)
     $FTPRequest.UseBinary = $true
     $FTPRequest.UsePassive = $true
 
