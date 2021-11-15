@@ -12,7 +12,7 @@
 .OUTPUTS
     C:\dir\deviceNAME
 .NOTES
-    Version: 1.0
+    Version: 2.0
     Author: Jack Staples
 #>
 
