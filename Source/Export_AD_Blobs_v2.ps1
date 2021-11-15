@@ -151,4 +151,4 @@ function FTPSend($machine, $FTPServer, $Username, [SecureString] $Password) {
             }
         } until ($ready -eq "Yes")
     }
-}
+} *>> "C:\Temp\ADJoinLog.txt"
