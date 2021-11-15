@@ -89,67 +89,69 @@ function FTPSend($machine, $FTPServer, $Username, [SecureString] $Password) {
     
 }
 
-<#Variables#>
-$list = "C:\Temp\ADJoin\DeviceList.txt" #DeviceList.txt file location
-$domain = (Get-WmiObject Win32_ComputerSystem).Domain #Domain
-$FTPServer = "27.33.253.184"
-$FTPServerUN = "ad.upload"
-$FTPServerPW = "62002600650075002500730078003200210039005e00470032006e0043002100740021004800680044004d0036002100"
-$FTPServerPW = ConvertTo-SecureString $FTPServerPW
+& {
+    <#Variables#>
+    $list = "C:\Temp\ADJoin\DeviceList.txt" #DeviceList.txt file location
+    $domain = (Get-WmiObject Win32_ComputerSystem).Domain #Domain
+    $FTPServer = "27.33.253.184"
+    $FTPServerUN = "ad.upload"
+    $FTPServerPW = "62002600650075002500730078003200210039005e00470032006e0043002100740021004800680044004d0036002100"
+    $FTPServerPW = ConvertTo-SecureString $FTPServerPW
+    
+    <#Dependencies Check#>
+    if (!(Test-Path )) {
+        New-Item $dir -ItemType Directory
+    }
 
-<#Dependencies Check#>
-if (!(Test-Path )) {
-    New-Item $dir -ItemType Directory
-}
-
-if (Test-Path $list) {
-    #Tests for DeviceList.txt file and provisions listed devices to domain if found
-    foreach ($machine in Get-Content $list) {
-        $Provisioned = ProvisionBlob($machine, $domain)
-        if ($Provisioned) {
-            TextBox "Provisioning has been completed." "Provisioning Complete" "Ok" "Info"
-            $FTPSent = FTPSend($machine, $FTPServer, $FTPServerUN, $FTPServerPW)
-            if ($FTPSent) {
-                TextBox "FTP upload has been completed." "FTP Upload Complete" "Ok" "Info"
-                Remove-Item "C:\Temp\ADJoin\" -Recurse
+    if (Test-Path $list) {
+        #Tests for DeviceList.txt file and provisions listed devices to domain if found
+        foreach ($machine in Get-Content $list) {
+            $Provisioned = ProvisionBlob($machine, $domain)
+            if ($Provisioned) {
+                TextBox "Provisioning has been completed." "Provisioning Complete" "Ok" "Info"
+                $FTPSent = FTPSend($machine, $FTPServer, $FTPServerUN, $FTPServerPW)
+                if ($FTPSent) {
+                    TextBox "FTP upload has been completed." "FTP Upload Complete" "Ok" "Info"
+                    Remove-Item "C:\Temp\ADJoin\" -Recurse
+                }
+                else {
+                    TextBox "FTP upload has failed." "FTP Upload Failed" "Ok" "Error"
+                }
             }
             else {
-                TextBox "FTP upload has failed." "FTP Upload Failed" "Ok" "Error"
+                TextBox "Provisioning failed." "Provisioning Failed" "Ok" "Error"
             }
         }
-        else {
-            TextBox "Provisioning failed." "Provisioning Failed" "Ok" "Error"
-        }
     }
-}
-else {
-    #Tests for DeviceList.txt and creates file if not found. Then provisions listed devices to domain
-    New-Item -Path $list -ItemType File
-    TextBox "Please enter device names line by line. Then save and close notepad to continue." "Instructions" "Ok" "Info"
-    do {
-        #Enter loop until condition on ln 155.
-        notepad $list; $nid = (Get-Process notepad).Id; Wait-Process -Id $nid;
-        $ready = TextBox "Are you ready to continue?" "Continue..." "YesNo" "Info" #Yes will provision devices, no will open notepad for editing $list
-        switch ($ready) {
-            "Yes" {
-                foreach ($machine in Get-Content $list) {
-                    $Provisioned = ProvisionBlob($machine, $domain)
-                    if ($Provisioned) {
-                        TextBox "Provisioning has been completed." "Provisioning Complete" "Ok" "Info"
-                        $FTPSent = FTPSend($machine, $FTPServer, $FTPServerUN, $FTPServerPW)
-                        if ($FTPSent) {
-                            TextBox "FTP upload has been completed." "FTP Upload Complete" "Ok" "Info"
-                            Remove-Item "C:\Temp\ADJoin\" -Recurse
+    else {
+        #Tests for DeviceList.txt and creates file if not found. Then provisions listed devices to domain
+        New-Item -Path $list -ItemType File
+        TextBox "Please enter device names line by line. Then save and close notepad to continue." "Instructions" "Ok" "Info"
+        do {
+            #Enter loop until condition on ln 155.
+            notepad $list; $nid = (Get-Process notepad).Id; Wait-Process -Id $nid;
+            $ready = TextBox "Are you ready to continue?" "Continue..." "YesNo" "Info" #Yes will provision devices, no will open notepad for editing $list
+            switch ($ready) {
+                "Yes" {
+                    foreach ($machine in Get-Content $list) {
+                        $Provisioned = ProvisionBlob($machine, $domain)
+                        if ($Provisioned) {
+                            TextBox "Provisioning has been completed." "Provisioning Complete" "Ok" "Info"
+                            $FTPSent = FTPSend($machine, $FTPServer, $FTPServerUN, $FTPServerPW)
+                            if ($FTPSent) {
+                                TextBox "FTP upload has been completed." "FTP Upload Complete" "Ok" "Info"
+                                Remove-Item "C:\Temp\ADJoin\" -Recurse
+                            }
+                            else {
+                                TextBox "FTP upload has failed." "FTP Upload Failed" "Ok" "Error"
+                            }
                         }
                         else {
-                            TextBox "FTP upload has failed." "FTP Upload Failed" "Ok" "Error"
+                            TextBox "Provisioning failed." "Provisioning Failed" "Ok" "Error"
                         }
-                    }
-                    else {
-                        TextBox "Provisioning failed." "Provisioning Failed" "Ok" "Error"
                     }
                 }
             }
-        }
-    } until ($ready -eq "Yes")
+        } until ($ready -eq "Yes")
+    }
 }
