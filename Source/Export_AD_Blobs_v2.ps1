@@ -41,7 +41,13 @@ function ProvisionBlob ($machine, $domain) {
         return $true
     }
     elseif (!(Test-Path "C:\Temp\ADJoin\$machine")) {
-        Djoin /provision /domain $domain /machine $machine /savefile "C:\Temp\ADJoin\$machine" /reuse
+        #Djoin /provision /domain $domain /machine $machine /savefile "C:\Temp\ADJoin\$machine" /reuse
+        
+        #Test File Start
+        New-Item "C:\Temp\ADJoin\$machine"
+        (Write-Host "$machine.$domain") *>> "C:\Temp\ADJoin\$machine"
+        #Test File End
+        
         return $true
     }
     else {
@@ -77,17 +83,17 @@ function FTPSend($machine, $FTPServer, $Username, [SecureString] $Password) {
                 return $true
             }
             catch {
-                Write-Error -Message "Closing FTP connection failed."
+                TextBox "Closing FTP connection failed." "FTP Close Failed" "Ok" "Error"
                 return $false
             }
         }
         catch {
-            Write-Error -Message "Failed to write file to FTP server."
+            TextBox "Failed to write file to FTP server." "FTP Write Failed" "Ok" "Error"
             return $false
         }
     }
     catch {
-        Write-Error -Message "Failed to connect to FTP server."
+        TextBox "Failed to connect to FTP server." "FTP Connection Failed" "Ok" "Error"
         return $false
     }
     
