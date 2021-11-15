@@ -37,7 +37,7 @@ function ProvisionBlob ($machine, $domain) {
         return $true
     }
     else {
-        return $true
+        return $false
     }
 }
 
@@ -66,7 +66,6 @@ function FTPSend($machine, $FTPServer, $Username, [SecureString] $Password) {
                 #Cleanup
                 $Run.Close()
                 $Run.Dispose()
-                Remove-Item $LocalFile
                 return $true
             }
             catch {
