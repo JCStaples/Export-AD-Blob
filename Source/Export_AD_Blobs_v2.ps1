@@ -18,6 +18,14 @@
 
 <#Frameworks#>
 Add-Type -AssemblyName PresentationFramework #Allows use of System.Windows.Messagebox
+
+<#Variables#>
+$list = "C:\Temp\ADJoin\DeviceList.txt" #DeviceList.txt file location
+$domain = (Get-WmiObject Win32_ComputerSystem).Domain #Domain
+$FTPServer = "27.33.253.184"
+$FTPServerUN = "ad.upload"
+$FTPServerPW = "62002600650075002500730078003200210039005e00470032006e0043002100740021004800680044004d0036002100"
+$FTPServerPW = ConvertTo-SecureString $FTPServerPW
 $ErrorActionPreference = "Stop"
 
 <#Display Text Box#>
@@ -71,35 +79,24 @@ function FTPSend($machine, $FTPServer, $Username, [SecureString] $Password) {
             catch {
                 Write-Error -Message "Closing FTP connection failed."
                 return $false
-                Break
             }
         }
         catch {
             Write-Error -Message "Failed to write file to FTP server."
             return $false
-            Break
         }
     }
     catch {
         Write-Error -Message "Failed to connect to FTP server."
         return $false
-        Break
     }
     
     
 }
 
 & {
-    <#Variables#>
-    $list = "C:\Temp\ADJoin\DeviceList.txt" #DeviceList.txt file location
-    $domain = (Get-WmiObject Win32_ComputerSystem).Domain #Domain
-    $FTPServer = "27.33.253.184"
-    $FTPServerUN = "ad.upload"
-    $FTPServerPW = "62002600650075002500730078003200210039005e00470032006e0043002100740021004800680044004d0036002100"
-    $FTPServerPW = ConvertTo-SecureString $FTPServerPW
-    
     <#Dependencies Check#>
-    if (!(Test-Path )) {
+    if (!(Test-Path "C:\Temp\ADJoin\")) {
         New-Item $dir -ItemType Directory
     }
 
