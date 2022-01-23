@@ -22,6 +22,7 @@ Add-Type -AssemblyName PresentationFramework #Allows use of System.Windows.Messa
 <#Variables#>
 $list = "C:\Temp\ADJoin\DeviceList.txt" #DeviceList.txt file location
 $domain = (Get-WmiObject Win32_ComputerSystem).Domain #Domain
+$finished = $false
 $ErrorActionPreference = "Stop"
 
 <#Display Text Box#>
@@ -145,7 +146,7 @@ function FTPSend($machine) {
                             $FTPSent = FTPSend $machine
                             if ($FTPSent) {
                                 TextBox "FTP upload has been completed." "FTP Upload Complete" "Ok" "Info"
-                                Remove-Item "C:\Temp\ADJoin\" -Recurse
+                                
                             }
                             else {
                                 TextBox "FTP upload has failed." "FTP Upload Failed" "Ok" "Error"
