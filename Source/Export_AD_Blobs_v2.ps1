@@ -54,14 +54,14 @@ function ProvisionBlob ($machine, $domain) {
 # FTP Send Function
 function FTPSend($machine) {
     # Config
-    $Server = "27.33.253.184"
+    $Server = "ftp.workshop.andor.com.au"
     $Username = "ad.upload"
     $Password = "01000000d08c9ddf0115d1118c7a00c04fc297eb0100000016f7965a0c8d8340ac75a604ae0eb9860000000002000000000003660000c0000000100000000a8073db2c8507abaca42130a43ec9e10000000004800000a000000010000000101e2a42f2dae516d7ee0da20b0cce9d3800000062cb2f97d19994bc932a5e6f5baa69d306881bc332c697deaa115a95f0167e43ff3bc69086ea0adcb8d006088c6cc14df4a53c48e3c3c993140000001075e84a5aa17328237c4c3cdb2e9514b9d1b61b"
     $Password = ConvertTo-SecureString -String $Password
 
     # Files
     $LocalFile = "C:\Temp\ADJoin\$machine"
-    $RemoteFile = "ftp://$Server/$machine"
+    $RemoteFile = "ftps://$Server/$machine"
 
     # Create FTP Rquest Object
     $FTPRequest = [System.Net.FtpWebRequest]::Create($RemoteFile)
