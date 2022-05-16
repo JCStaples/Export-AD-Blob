@@ -37,11 +37,11 @@ function ProvisionBlob ($machine, $domain) {
         return $true
     }
     elseif (!(Test-Path "C:\Temp\ADJoin\$machine")) {
-        # Djoin /provision /domain $domain /machine $machine /savefile "C:\Temp\ADJoin\$machine" /reuse
+        Djoin /provision /domain $domain /machine $machine /savefile "C:\Temp\ADJoin\$machine" /reuse
         
         # Test File Start
-        New-Item "C:\Temp\ADJoin\$machine"
-        (Write-Host "$machine") *>> "C:\Temp\ADJoin\$machine"
+        #New-Item "C:\Temp\ADJoin\$machine"
+        #(Write-Host "$machine") *>> "C:\Temp\ADJoin\$machine"
         # Test File End
         
         return $true
