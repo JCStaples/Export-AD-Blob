@@ -56,7 +56,7 @@ function FTPSend($machine) {
     # Config
     $Server = "ftp.workshop.andor.com.au"
     $Username = "ad.upload"
-    $Password = "b&eu%sx2!9^G2nC!t!HhDM6!"
+    $Password = # Pass
 
     # Files
     $LocalFile = "C:\Temp\ADJoin\$machine.adblob"
